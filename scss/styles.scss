@@ -1,0 +1,237 @@
+// Change the colors
+$color1: red;
+$color2: blue;
+
+.text-effect {
+  overflow: hidden;
+  position: relative;
+  
+  // The blend modes mute the colors, so let's bump them up
+  filter: contrast(110%) brightness(190%);
+}
+
+.neon {
+  position: relative;
+  
+  // Only works on a black background, sorry
+  background: black;
+  
+  // The actual text inside the div is superfluous, only data-text matters. The text is added so you can easily edit the preview
+  color: transparent;
+  
+  &::before,
+  &::after {
+    // Add two copies of the text on their own layer
+    content: attr(data-text);
+    
+    // White, so we can paint them later
+    color: white;
+    
+    // And blur them to create the neon effect with the blend-mode below
+    filter: blur(0.02em); // 1,5px
+    
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+  }
+  
+  // Set the top copy to difference. This creates the knock-out effect with a bit of glow
+  &::after {
+    mix-blend-mode: difference;
+  }
+}
+
+// Position our two effect layers
+.gradient,
+.spotlight {
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  pointer-events: none;
+  z-index: 10;  
+}
+
+// Add the colors
+.gradient {
+  background: linear-gradient(45deg, $color1, $color2);
+  
+  // Multiply mode will paint only the white text
+  mix-blend-mode: multiply;
+}
+
+.spotlight {
+  animation: light 20s infinite linear;
+  
+  // These are the lights, color-dodge needs a black bg for optimum effect
+  background: 
+    radial-gradient(circle, white, transparent 25%) 0 0 / 25% 25%, 
+    radial-gradient(circle, white, black 25%) 50% 50% / 12.5% 12.5%;
+  top: -100%; left: -100%;
+  
+  // Color dodge gives the lights that shimmer effect
+  mix-blend-mode: color-dodge;
+}
+
+@keyframes light {
+  100% {
+    transform: translate3d(50%, 50%, 0);
+  }
+}
+
+//=== Pen styling, ignore
+
+// Style text
+.neon {
+  font: 700 80px 'Lato', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  
+  &:focus { outline: none; border: 1px dotted white; }
+}
+
+
+html, body {
+  margin: 0px;
+}
+
+.content {
+  background-color:rgb(0, 0, 0);
+  margin: 60px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  padding: 10px 60px;
+  margin: 0 auto;
+  font-variant-caps: all-petite-caps;
+  font-family: sans-serif;
+  font-weight: 50;
+  font-size: 100px;
+  margin-bottom: 50px;
+  // background-color: rgba(255,255,255,2);
+  border-radius: 100px;
+  color: #ffffff;
+  // text-shadow: 0 -1px 2px #fff,
+  //             0 -2px 4px rgba(255,200,200,1),
+  //             0 -4px 8px rgba(255,150,150,1),
+  //             0 -6px 12px rgba(255,200,200,1),
+  //             0 -12px 20px rgba(255,50,50,1),
+  //             0 -18px 30px rgba(255,0,0,1);
+  // animation: fire 3s ease infinite,
+  // colorSpin 100s linear infinite;
+  animation: blinking 5s ease infinite,
+  colorSpin 100s linear infinite;
+  transition: .5s;
+  // background-color: rgb(210, 255, 255);
+  box-shadow: 0 0 05px rgba(0, 255, 255, 1),
+              0 0 10px rgba(0, 255, 255, 1),
+              0 0 0 50px rgba(0, 255, 255, 0.1),
+              0 0 0 40px rgba(0, 255, 255, 0.1),
+              0 0 0 30px rgba(0, 255, 255, 0.1),
+              0 0 0 20px rgba(0, 255, 255, 0.1),
+              0 0 0 10px rgba(0, 255, 255, 0.1),
+              0 0 0 05px rgba(0, 255, 255, 0.1);
+}
+
+.title:hover{
+  box-shadow: 0 0 05px rgba(0, 255, 255, 1),
+              0 0 10px rgba(0, 255, 255, 1),
+              0 0 15px rgba(0, 255, 255, 1),
+              0 0 0 50px rgba(0, 255, 255,0.1),
+              0 0 0 40px rgba(0, 255, 255,0.1),
+              0 0 0 30px rgba(0, 255, 255,0.1),
+              0 0 0 20px rgba(0, 255, 255,0.1),
+              0 0 0 10px rgba(0, 255, 255,0.1),
+              0 0 0 05px rgba(0, 255, 255,0.1);
+}
+
+// @keyframes colorSpin {
+//   to{filter:hue-rotate(360deg)}
+// }
+
+// @keyframes blinking {
+//   50% {
+//     box-shadow: 0 0 05px rgba(0, 255, 255, 1),
+//                 0 0 10px rgba(0, 255, 255, 1),
+//                 0 0 15px rgba(0, 255, 255, 1),
+//                 0 0 0 50px rgba(0, 255, 255,0.1),
+//                 0 0 0 40px rgba(0, 255, 255,0.1),
+//                 0 0 0 30px rgba(0, 255, 255,0.1),
+//                 0 0 0 20px rgba(0, 255, 255,0.1),
+//                 0 0 0 10px rgba(0, 255, 255,0.1),
+//                 0 0 0 05px rgba(0, 255, 255,0.1);
+//       }
+// }
+
+// @keyframes fire {
+//   50% {
+//   text-shadow: 0 -1px 2px #fff,
+//               0 -4px 6px rgba(255,200,200,1),
+//               0 -6px 10px rgba(255,150,150,1),
+//               0 -8px 14px rgba(255,200,200,1),
+//               0 -14px 22px rgba(255,50,50,1),
+//               0 -20px 32px rgba(255,0,0,1);
+//       }
+// }
+
+.fridaySongPlayer {
+  margin: 0px auto;
+  width: 80%;
+  // height: 60%;
+  // height: 500px;
+  // width: 560px; 
+  height: 560px;
+  // width: 1280px; 
+  // height: 960px;
+  padding-top: 16px;
+}
+
+.spotifyPlayer {
+  margin: 0px auto;
+  width: 40%;
+  height: 45%;
+  // width: 600px; 
+  // height: 560px;
+  padding-top: 16px;
+}
+
+// // Center everything
+// body {
+//   background: black;
+//   display: flex;
+//   min-height: 100vh;
+  // justify-content: center;
+  // align-content: center;
+  // align-items: center;
+// }
+
+
+// body { font: 400 1em/1.5 "Neuton"; background: #090d00; color: rgba(255,255,255,.25); text-align: center; margin: 0 }
+
+.spotifyList {
+  color: rgba(255,255,255,.25); 
+  text-align: center; 
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  display: inline-block;
+  // border: 4px double rgba(255,255,255,.25);
+  // border-width: 4px 0;
+  // margin: 24px 0px;
+  margin-top: 16px;
+  padding: 24px 0px;
+  // position: absolute;
+  // top: 18%;
+  // left: 50%;
+  // right: 50%;
+  // width: 640px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  // margin: 0 0 0 -320px;
+}
